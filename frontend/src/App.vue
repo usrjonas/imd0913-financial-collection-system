@@ -1,78 +1,60 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-const walletStore = useWalletStore();
-</script>
+<script setup></script>
 
 <template>
   <div>
     <button v-if="!connected" @click="connectWallet">Connect wallet</button>
-    <button v-if="connected" @click="callContract">Call contract</button>
+    <button v-else @click="callContract">Call contract</button>
     {{ contractResult }}
   </div>
 </template>
 
 <script>
-import Web3 from 'web3'
+import Web3 from "web3";
+import contractAddress from "./constants/ContractAddress";
+import ABI from "./constants/ABI.js";
+
 export default {
-  name: 'App',
+  name: "App",
 
   data() {
     return {
       connected: false,
-      contractResult: '',
-    }
-  },
-
-  mounted() {
-    if (this.walletStore.walletData.address != '') {
-      console.log('There is a wallet connected!');
-      this.retrieveMessages();
-    }
+    };
   },
 
   methods: {
     async connectWallet() {
       if (window.ethereum) {
         try {
-          const accounts = await window.ethereum.request({
-            method: 'eth_requestAccounts',
-          }).then(() => {
-            this.connected = true;
-          })
-          if (accounts.length > 0) {
-            this.connected = true
-          }
+          const accounts = await window.ethereum
+            .request({
+              method: "eth_requestAccounts",
+            })
+            .then(() => {
+              this.connected = true;
+            });
         } catch (err) {
-          console.error(err)
+          console.log("Usuário negou acesso ao web3!");
+          console.error(err);
         }
+      } else {
+        console.error("Instalar MetaMask!");
+        return;
       }
     },
 
     async callContract() {
       const web3 = new Web3(window.ethereum);
-      let contractAddress = '0xa5218F88C6cc0A84eC8bE488747D6DA76d97f5C1';
-      // let abi = JSON.parse(`[{"inputs": [],"stateMutability": "nonpayable","type": "constructor"},{"inputs": [],"name": "greet","outputs": [{"internalType": "string","name": "","type": "string"}],"stateMutability": "view","type": "function"}]`);
 
-      const contract = new web3.eth.Contract(
-        [
-          {
-            inputs: [],
-            name: 'get',
-            outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-            stateMutability: 'view',
-            type: 'function',
-          },
-        ],
-        contractAddress
-      )
-      // console.log('teste');
-      const result = await contract.methods.get().call()
-      // console.log(result);
-      // this.contractResult = result
+      const contract = new web3.eth.Contract(ABI, contractAddress);
+      console.log("teste");
+      contract.methods
+        .greet()
+        .call()
+        .then((result) => console.log(result));
     },
   },
-}
+};
 </script>
 
 <style scoped>
