@@ -19,7 +19,7 @@ contract FinancialCollectionSystem {
 
 
     mapping(string => address) private identifierToCreator;
-    mapping(string  => Account) private accounts;
+    mapping(string => Account) private accounts;
 
 
     struct Account {
@@ -83,7 +83,7 @@ contract FinancialCollectionSystem {
                              string memory creatorInformation, bool earlyWithdrawal, uint256 expirationDate,
                              uint256 minDeposit, uint256 maxDeposit ) public {
         // Verificar se o identificador único já existe
-        require(identifierToCreator[uniqueIdentifier] != address(0) , "At least one unique identifier is required");
+        require(identifierToCreator[uniqueIdentifier] == address(0) , "This unique identifier is already in use");
 
         // Verificar se a data de validade é válida
         require(expirationDate > block.timestamp, "Invalid expiration date");
