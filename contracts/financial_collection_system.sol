@@ -7,35 +7,42 @@
 pragma solidity ^0.8.19;
 
 contract FinancialCollectionSystem {
-
-    event AccountCreated(string indexed uniqueIdentifier, string creatorInformation, uint256 timestamp);
-    event DepositMade(string indexed uniqueIdentifier, address indexed depositor, uint256 deposit);
-    event WithdrawalMade(string indexed uniqueIdentifier, address indexed withdrawer, uint256 amount);
+    event AccountCreated(
+        string indexed uniqueIdentifier,
+        string creatorInformation,
+        uint256 timestamp
+    );
+    event DepositMade(
+        string indexed uniqueIdentifier,
+        address indexed depositor,
+        uint256 deposit
+    );
+    event WithdrawalMade(
+        string indexed uniqueIdentifier,
+        address indexed withdrawer,
+        uint256 amount
+    );
     event ContractDestructed(address indexed manager, uint256 managerProfit);
-
 
     address private manager;
     uint256 private managerProfit;
 
-
     mapping(string => address) private identifierToCreator;
     mapping(string => Account) private accounts;
 
-
     struct Account {
         address creatorAddress;
-        string  uniqueIdentifier;
-        string  securityKey;
-        string  description;
-        string  creatorInformation;
+        string uniqueIdentifier;
+        string securityKey;
+        string description;
+        string creatorInformation;
         uint256 balance;
         uint256 expirationDate;
         uint256 minDeposit;
         uint256 maxDeposit;
         uint256 amountDeposited;
-        bool    earlyWithdrawal;
+        bool earlyWithdrawal;
     }
-
 
     modifier restricted() {
         require(
@@ -45,22 +52,38 @@ contract FinancialCollectionSystem {
         _;
     }
 
-
     constructor() {
         manager = msg.sender;
     }
 
-
-    function existsAccount(string memory uniqueIdentifier) public view returns (bool) {
+    function existsAccount(
+        string memory uniqueIdentifier
+    ) public view returns (bool) {
         return identifierToCreator[uniqueIdentifier] != address(0);
     }
 
-
-    function getAccountInformation(string memory uniqueIdentifier) public view returns (string memory, string memory,
-                                                                                        string memory, uint256, uint256,
-                                                                                        uint256, uint256, uint256, bool) {
+    function getAccountInformation(
+        string memory uniqueIdentifier
+    )
+        public
+        view
+        returns (
+            string memory,
+            string memory,
+            string memory,
+            uint256,
+            uint256,
+            uint256,
+            uint256,
+            uint256,
+            bool
+        )
+    {
         // Verificar se a conta associada ao identificador único existe
-        require(identifierToCreator[uniqueIdentifier] != address(0), "Account does not exist");
+        require(
+            identifierToCreator[uniqueIdentifier] != address(0),
+            "Account does not exist"
+        );
 
         // Obter a conta associada ao identificador único
         Account storage account = accounts[uniqueIdentifier];
@@ -78,12 +101,21 @@ contract FinancialCollectionSystem {
         );
     }
 
-
-    function createAccount ( string memory uniqueIdentifier, string memory securityKey, string memory description,
-                             string memory creatorInformation, bool earlyWithdrawal, uint256 expirationDate,
-                             uint256 minDeposit, uint256 maxDeposit ) public {
+    function createAccount(
+        string memory uniqueIdentifier,
+        string memory securityKey,
+        string memory description,
+        string memory creatorInformation,
+        bool earlyWithdrawal,
+        uint256 expirationDate,
+        uint256 minDeposit,
+        uint256 maxDeposit
+    ) public {
         // Verificar se o identificador único já existe
-        require(identifierToCreator[uniqueIdentifier] == address(0) , "This unique identifier is already in use");
+        require(
+            identifierToCreator[uniqueIdentifier] == address(0),
+            "This unique identifier is already in use"
+        );
 
         // Verificar se a data de validade é válida
         require(expirationDate > block.timestamp, "Invalid expiration date");
@@ -113,19 +145,28 @@ contract FinancialCollectionSystem {
         identifierToCreator[uniqueIdentifier] = msg.sender;
 
         // Emitir evento ou registrar log
-        emit AccountCreated(uniqueIdentifier, creatorInformation, block.timestamp);
+        emit AccountCreated(
+            uniqueIdentifier,
+            creatorInformation,
+            block.timestamp
+        );
     }
-
 
     function depositValue(string memory uniqueIdentifier) public payable {
         // Verificar se a conta associada ao identificador único existe
-        require(identifierToCreator[uniqueIdentifier] != address(0), "Account does not exist");
+        require(
+            identifierToCreator[uniqueIdentifier] != address(0),
+            "Account does not exist"
+        );
 
         // Obter a conta associada ao identificador único
         Account storage account = accounts[uniqueIdentifier];
 
         // Verificar se o depósito está dentro do intervalo permitido
-        require(msg.value >= account.minDeposit && msg.value <= account.maxDeposit, "Invalid deposit amount");
+        require(
+            msg.value >= account.minDeposit && msg.value <= account.maxDeposit,
+            "Invalid deposit amount"
+        );
 
         // Calcular 1% do depósito para o managerProfit
         uint256 managerShare = (msg.value * 1) / 100;
@@ -142,20 +183,32 @@ contract FinancialCollectionSystem {
         emit DepositMade(uniqueIdentifier, msg.sender, deposit);
     }
 
-
-    function withdrawValue(string memory uniqueIdentifier, string memory securityKey) public {
+    function withdrawValue(
+        string memory uniqueIdentifier,
+        string memory securityKey
+    ) public {
         // Verificar se a conta associada ao identificador único existe
-        require(identifierToCreator[uniqueIdentifier] != address(0), "Account does not exist");
+        require(
+            identifierToCreator[uniqueIdentifier] != address(0),
+            "Account does not exist"
+        );
 
         // Obter a conta associada ao identificador único
         Account storage account = accounts[uniqueIdentifier];
 
         // Verificar se a chave de segurança está correta
-        require(keccak256(abi.encodePacked(securityKey)) == keccak256(abi.encodePacked(account.securityKey)), "Invalid security key");
+        require(
+            keccak256(abi.encodePacked(securityKey)) ==
+                keccak256(abi.encodePacked(account.securityKey)),
+            "Invalid security key"
+        );
 
         if (!account.earlyWithdrawal) {
             // Verificar se a data de validade da conta já passou
-            require(block.timestamp < account.expirationDate, "Early withdrawal is not allowed");
+            require(
+                block.timestamp < account.expirationDate,
+                "Early withdrawal is not allowed"
+            );
         }
 
         // Verificar se o saldo da conta é maior que zero
@@ -171,9 +224,8 @@ contract FinancialCollectionSystem {
         account.balance = 0;
     }
 
-
     // Função para sacar o lucro do manager e destruir o contrato
-    function getManagerProfitAndDestructContract () public restricted {
+    function getManagerProfitAndDestructContract() public restricted {
         // Transfer any remaining funds in the contract to the manager
         if (managerProfit > 0) {
             payable(manager).transfer(managerProfit);
