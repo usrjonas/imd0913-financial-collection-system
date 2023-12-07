@@ -1,18 +1,5 @@
 const ABI = [
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_quant",
-        type: "uint256",
-      },
-    ],
-    name: "comprarRifa",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
     inputs: [],
     stateMutability: "nonpayable",
     type: "constructor",
@@ -21,51 +8,166 @@ const ABI = [
     anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: "string",
+        name: "uniqueIdentifier",
+        type: "string",
+      },
+      {
         indexed: false,
-        internalType: "address",
-        name: "comprador",
-        type: "address",
+        internalType: "string",
+        name: "creatorInformation",
+        type: "string",
       },
       {
         indexed: false,
         internalType: "uint256",
-        name: "quant",
+        name: "timestamp",
         type: "uint256",
       },
     ],
-    name: "RifaComprada",
+    name: "AccountCreated",
     type: "event",
-  },
-  {
-    inputs: [],
-    name: "sacarPremio",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "sortearRifa",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
   },
   {
     anonymous: false,
     inputs: [
       {
-        indexed: false,
+        indexed: true,
         internalType: "address",
-        name: "winner",
+        name: "manager",
         type: "address",
       },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "managerProfit",
+        type: "uint256",
+      },
     ],
-    name: "Sorteio",
+    name: "ContractDestructed",
     type: "event",
   },
   {
-    inputs: [],
-    name: "isOwner",
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "string",
+        name: "uniqueIdentifier",
+        type: "string",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "depositor",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "deposit",
+        type: "uint256",
+      },
+    ],
+    name: "DepositMade",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "string",
+        name: "uniqueIdentifier",
+        type: "string",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "withdrawer",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "WithdrawalMade",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "uniqueIdentifier",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "securityKey",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "description",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "creatorInformation",
+        type: "string",
+      },
+      {
+        internalType: "bool",
+        name: "earlyWithdrawal",
+        type: "bool",
+      },
+      {
+        internalType: "uint256",
+        name: "expirationDate",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "minDeposit",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "maxDeposit",
+        type: "uint256",
+      },
+    ],
+    name: "createAccount",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "uniqueIdentifier",
+        type: "string",
+      },
+    ],
+    name: "depositValue",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "uniqueIdentifier",
+        type: "string",
+      },
+    ],
+    name: "existsAccount",
     outputs: [
       {
         internalType: "bool",
@@ -77,13 +179,59 @@ const ABI = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "verGanhador",
+    inputs: [
+      {
+        internalType: "string",
+        name: "uniqueIdentifier",
+        type: "string",
+      },
+    ],
+    name: "getAccountInformation",
     outputs: [
       {
-        internalType: "address",
+        internalType: "string",
         name: "",
-        type: "address",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
       },
     ],
     stateMutability: "view",
@@ -91,54 +239,27 @@ const ABI = [
   },
   {
     inputs: [],
-    name: "verPrecoDaRifa",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
+    name: "getManagerProfitAndDestructContract",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
-    inputs: [],
-    name: "verPremio",
-    outputs: [
+    inputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
+        internalType: "string",
+        name: "uniqueIdentifier",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "securityKey",
+        type: "string",
       },
     ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "verRifas",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "verTotalDeRifas",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
+    name: "withdrawValue",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
 ];
