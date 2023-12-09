@@ -23,7 +23,35 @@
         >
       </a-menu>
 
-      <router-view></router-view>
+      <!-- <router-view></router-view> -->
+
+      <a-row v-if="connected">
+        <a-col :span="4">
+          <a-input
+            placeholder="account address"
+            allowClear
+            v-model:value="accountAddress"
+          ></a-input>
+        </a-col>
+        <a-col :span="3">
+          <a-button
+            type="primary"
+            @click="existAccount"
+            :disabled="existAccountIsDisabled"
+            :loading="this.loadings.existAccount"
+            >Exist Account</a-button
+          >
+        </a-col>
+        <a-col :span="4">
+          <a-button
+            type="primary"
+            @click="getAccountInformation"
+            :disabled="existAccountIsDisabled"
+            :loading="this.loadings.accountInformation"
+            >Account Information</a-button
+          >
+        </a-col>
+      </a-row>
       <!-- <header>
         <h1>Your App Name</h1>
         <Option />
@@ -43,6 +71,7 @@ import contractAddress from "./constants/ContractAddress";
 import ABI from "./constants/ABI.js";
 import Menu from "./components/Menu.vue";
 import Option from "./components/Option.vue";
+import { notification } from "ant-design-vue";
 
 export default {
   name: "App",
@@ -56,6 +85,10 @@ export default {
       connected: false,
       contract: {},
       accountAddress: "",
+      loadings: {
+        existAccount: false,
+        accountInformation: false,
+      },
 
       headerOptions: ["Option 1", "Option 2", "Option 3"],
       selectedOption: null,
@@ -95,10 +128,52 @@ export default {
     },
 
     async existAccount() {
-      console.log(this.accountAddress);
+      try {
+        this.setLoading("existAccount", true);
+        console.log(
+          "Verifing if this account " + this.accountAddress + " exist..."
+        );
+
+        this.contract.methods
+          .existsAccount(this.accountAddress)
+          .call()
+          .then((result) => {
+            console.log(result);
+            successNotification("Account Exists", "Account exist!");
+          })
+          .catch((err) => {
+            console.error(err);
+            errorNotification("Account Exists", "Account not found!");
+          });
+      } finally {
+        console.log("Fim da execução!");
+        this.setLoading("existAccount", false);
+      }
     },
 
-    async getAccountInformation() {},
+    async getAccountInformation() {
+      try {
+        this.setLoading("accountInformation", true);
+        console.log(
+          "Getting information of this account " + this.accountAddress
+        );
+
+        this.contract.methods
+          .getAccountInformation(this.accountAddress)
+          .call()
+          .then((result) => {
+            console.log(result);
+            successNotification("Account Information", result.data);
+          })
+          .catch(() => {
+            console.log("Account not found!");
+            errorNotification("Account Information", "Account not found!");
+          });
+      } finally {
+        console.log("Fim da execução!");
+        this.setLoading("accountInformation", false);
+      }
+    },
 
     async createAccount() {},
 
@@ -112,7 +187,35 @@ export default {
         .call()
         .then((result) => console.log(result));
     },
+
+    setLoading(propiert, state) {
+      this.loadings[propiert] = state;
+    },
   },
+
+  computed: {
+    existAccountIsDisabled() {
+      return this.accountAddress.length <= 0;
+    },
+  },
+};
+
+const successNotification = (title, description) => {
+  notification["success"]({
+    message: title,
+    description: description,
+    duration: 5,
+    placement: "top",
+  });
+};
+
+const errorNotification = (title, description) => {
+  notification["error"]({
+    message: title,
+    description: description,
+    duration: 5,
+    placement: "top",
+  });
 };
 </script>
 
