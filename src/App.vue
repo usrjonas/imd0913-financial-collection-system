@@ -1,66 +1,39 @@
 <script setup></script>
 
 <template>
-  <a-row v-if="!connected">
-    <a-col :span="24">
-      <a-button @click="connectWallet">Connect wallet</a-button>
-    </a-col>
-  </a-row>
-  <div v-else>
-    <a-row>
-      <a-col :span="4">
-        <a-input v-model="accountAddress"></a-input>
-      </a-col>
-      <a-col :span="4">
-        <a-button type="primary" @click="existAccount">Exist Account</a-button>
-      </a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="4">
-        <a-input></a-input>
-      </a-col>
-      <a-col :span="4">
-        <a-button type="primary" @click="getAccountInformation"
-          >Account Information</a-button
+  <div>
+    <!-- <a-row v-if="!connected">
+      <a-col :span="24"> </a-col>
+    </a-row> -->
+    <div>
+      <a-menu
+        mode="horizontal"
+        theme="dark"
+        :default-selected-keys="selectedKeys"
+      >
+        <!-- <a-menu-item @click="connectWallet">Connect wallet</a-menu-item> -->
+        <a-menu-item :key="1"
+          >Home<router-link to="/"></router-link
+        ></a-menu-item>
+        <a-menu-item :key="2"
+          ><router-link to="/about">About</router-link></a-menu-item
         >
-      </a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="4">
-        <a-input></a-input>
-      </a-col>
-      <a-col :span="4">
-        <a-button type="primary" @click="createAccount"
-          >Create Account</a-button
+        <a-menu-item @click="connectWallet" :key="3"
+          >Connect wallet</a-menu-item
         >
-      </a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="4">
-        <a-input></a-input>
-      </a-col>
-      <a-col :span="4">
-        <a-button type="primary" @click="depositValue">Deposit Value</a-button>
-      </a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="4">
-        <a-input></a-input>
-      </a-col>
-      <a-col :span="4">
-        <a-button type="primary" @click="withdrawValue"
-          >Withdraw Value</a-button
-        >
-      </a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="4"></a-col>
-      <a-col :span="4">
-        <a-button type="primary" @click="getManagerProfitAndDestructContract"
-          >Destroy Contract</a-button
-        >
-      </a-col>
-    </a-row>
+      </a-menu>
+
+      <router-view></router-view>
+      <!-- <header>
+        <h1>Your App Name</h1>
+        <Option />
+        <Menu :options="headerOptions" @optionSelected="handleOptionSelected" />
+      </header>
+
+      <router-view></router-view>
+
+      <p v-if="selectedOption">Selected Option: {{ selectedOption }}</p> -->
+    </div>
   </div>
 </template>
 
@@ -68,15 +41,14 @@
 import Web3 from "web3";
 import contractAddress from "./constants/ContractAddress";
 import ABI from "./constants/ABI.js";
-import { Button, Col, Row, Input } from "ant-design-vue";
+import Menu from "./components/Menu.vue";
+import Option from "./components/Option.vue";
 
 export default {
   name: "App",
   components: {
-    AButton: Button,
-    ARow: Row,
-    ACol: Col,
-    AInput: Input,
+    Menu,
+    Option,
   },
 
   data() {
@@ -84,14 +56,23 @@ export default {
       connected: false,
       contract: {},
       accountAddress: "",
+
+      headerOptions: ["Option 1", "Option 2", "Option 3"],
+      selectedOption: null,
     };
   },
 
   methods: {
+    handleOptionSelected(option) {
+      // Do something with the selected option
+      console.log("Selected Option:", option);
+      this.selectedOption = option;
+    },
+
     async connectWallet() {
       if (window.ethereum) {
         try {
-          const accounts = await window.ethereum
+          await window.ethereum
             .request({
               method: "eth_requestAccounts",
             })

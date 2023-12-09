@@ -8,8 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^2.0.0",
     "ant-design-vue": "^4.0.7",
-    "vue": "^3.3.4",
+    "vue": "^3.2.36",
+    "vue-router": "^4.2.5",
     "web3": "^4.2.2"
   },
   "devDependencies": {
