@@ -8,7 +8,7 @@ const ABI = [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
+        indexed: false,
         internalType: "string",
         name: "uniqueIdentifier",
         type: "string",
@@ -27,75 +27,6 @@ const ABI = [
       },
     ],
     name: "AccountCreated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "manager",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "managerProfit",
-        type: "uint256",
-      },
-    ],
-    name: "ContractDestructed",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "string",
-        name: "uniqueIdentifier",
-        type: "string",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "depositor",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "deposit",
-        type: "uint256",
-      },
-    ],
-    name: "DepositMade",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "string",
-        name: "uniqueIdentifier",
-        type: "string",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "withdrawer",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "WithdrawalMade",
     type: "event",
   },
   {
@@ -147,6 +78,31 @@ const ABI = [
     type: "function",
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "string",
+        name: "uniqueIdentifier",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "depositor",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "deposit",
+        type: "uint256",
+      },
+    ],
+    name: "DepositMade",
+    type: "event",
+  },
+  {
     inputs: [
       {
         internalType: "string",
@@ -157,6 +113,56 @@ const ABI = [
     name: "depositValue",
     outputs: [],
     stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getManagerProfit",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "string",
+        name: "uniqueIdentifier",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "withdrawer",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "WithdrawalMade",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "uniqueIdentifier",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "securityKey",
+        type: "string",
+      },
+    ],
+    name: "withdrawValue",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -235,31 +241,6 @@ const ABI = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getManagerProfitAndDestructContract",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "uniqueIdentifier",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "securityKey",
-        type: "string",
-      },
-    ],
-    name: "withdrawValue",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
 ];

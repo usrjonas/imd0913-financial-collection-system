@@ -8,21 +8,20 @@ pragma solidity ^0.8.19;
 
 contract FinancialCollectionSystem {
     event AccountCreated(
-        string indexed uniqueIdentifier,
+        string uniqueIdentifier,
         string creatorInformation,
         uint256 timestamp
     );
     event DepositMade(
-        string indexed uniqueIdentifier,
-        address indexed depositor,
+        string uniqueIdentifier,
+        address depositor,
         uint256 deposit
     );
     event WithdrawalMade(
-        string indexed uniqueIdentifier,
-        address indexed withdrawer,
+        string uniqueIdentifier,
+        address withdrawer,
         uint256 amount
     );
-    event ContractDestructed(address indexed manager, uint256 managerProfit);
 
     address private manager;
     uint256 private managerProfit;
@@ -225,16 +224,10 @@ contract FinancialCollectionSystem {
     }
 
     // Função para sacar o lucro do manager e destruir o contrato
-    function getManagerProfitAndDestructContract() public restricted {
+    function getManagerProfit() public restricted {
         // Transfer any remaining funds in the contract to the manager
         if (managerProfit > 0) {
             payable(manager).transfer(managerProfit);
         }
-
-        // Emit an event indicating the contract destruction
-        emit ContractDestructed(manager, managerProfit);
-
-        // Self-destruct the contract and transfer any remaining ether to the manager
-        selfdestruct(payable(manager));
     }
 }
