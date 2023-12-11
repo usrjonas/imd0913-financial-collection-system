@@ -25,15 +25,15 @@
 
       <!-- <router-view></router-view> -->
       <div v-if="connected">
-        <a-row>
+        <a-col :span="8">
+          <a-input
+            placeholder="Account address"
+            allowClear
+            v-model:value="contractData.accountAddress"
+          ></a-input>
+        </a-col>
+        <a-row :span="8">
           <a-col :span="4">
-            <a-input
-              placeholder="Account address"
-              allowClear
-              v-model:value="contractData.accountAddress"
-            ></a-input>
-          </a-col>
-          <a-col :span="3">
             <a-button
               type="primary"
               @click="existAccount"
@@ -42,8 +42,9 @@
               >Exist Account</a-button
             >
           </a-col>
-          <a-col :span="4">
+          <a-col>
             <a-button
+              :span="4"
               type="primary"
               @click="getAccountInformation"
               :disabled="existAccountIsDisabled"
@@ -53,7 +54,8 @@
           </a-col>
         </a-row>
 
-        <a-row v-if="connected">
+        <br /><br />
+        <div v-if="connected">
           <a-col :span="4">
             <a-input
               placeholder="Unique Identifier"
@@ -121,7 +123,7 @@
               >Create Account</a-button
             >
           </a-col>
-        </a-row>
+        </div>
       </div>
       <!-- <header>
         <h1>Your App Name</h1>
@@ -190,22 +192,22 @@ export default {
         try {
           await window.ethereum
             .request({
-              method: "eth_accounts",
+              method: "eth_requestAccounts",
             })
-            .then(result => {
+            .then((accounts) => {
               this.callContract();
               this.connected = true;
-              this.account = result;
+              this.account = accounts[0];
             })
             .catch((err) => {
               console.log("Usuário negou acesso ao web3!");
               console.error(err);
             });
-          
 
           window.ethereum.on("accountsChanged", (accounts) => {
             this.account = accounts[0];
           });
+          console.log(this.account);
         } catch (err) {
           console.log("Usuário negou acesso ao web3!");
           console.error(err);
@@ -277,9 +279,9 @@ export default {
       try {
         this.setLoading("createAccount", true);
         console.log("Creating account...");
-        console.log( "account: " + this.account);
+        console.log("account: " + this.account);
 
-        this.contract.methods
+        await this.contract.methods
           .createAccount(
             this.contractData.uniqueIdentifier,
             this.contractData.securityKey,
@@ -290,7 +292,7 @@ export default {
             this.contractData.minDeposit,
             this.contractData.maxDeposit
           )
-          .call({ from: this.account })
+          .send({ from: this.account })
           .then((result) => {
             console.log(result);
             successNotification("Account Created", "Account created!");
