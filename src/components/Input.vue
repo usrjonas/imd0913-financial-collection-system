@@ -1,5 +1,3 @@
-<!-- Menu.vue -->
-
 <template>
   <div>
     <a-row>
