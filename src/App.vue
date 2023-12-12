@@ -14,10 +14,10 @@
       >
       <a-menu-item @click="connectWallet" :key="3">Connect wallet</a-menu-item>
     </a-menu>
-    <!-- <router-view></router-view> -->
     <div v-if="connected">
-      <a-row :span="8">
-        <a-col :span="4">
+      <div style="margin-bottom: 4vh"></div>
+      <a-row :span="8" justify="center" style="min-height: 4vh">
+        <a-col :span="8">
           <a-input
             placeholder="Unique Identifier"
             allowClear
@@ -25,9 +25,10 @@
           ></a-input>
         </a-col>
       </a-row>
-      <a-row :span="4">
-        <a-col :span="2">
+      <a-row :span="8" :gutter="8" justify="center">
+        <a-col :span="4">
           <a-button
+            :span="4"
             type="primary"
             @click="existAccount"
             :disabled="existAccountIsDisabled"
@@ -36,7 +37,7 @@
             >Exist Account</a-button
           >
         </a-col>
-        <a-col>
+        <a-col :span="4">
           <a-button
             :span="4"
             type="primary"
@@ -49,9 +50,9 @@
         </a-col>
       </a-row>
 
-      <br /><br />
-      <a-row :span="8">
-        <a-col :span="4">
+      <div style="margin-bottom: 6vh"></div>
+      <a-row :span="8" justify="center" style="min-height: 4vh">
+        <a-col :span="8">
           <a-input
             placeholder="New Unique Identifier"
             allowClear
@@ -59,8 +60,8 @@
           ></a-input>
         </a-col>
       </a-row>
-      <a-row :span="8">
-        <a-col :span="4">
+      <a-row :span="8" justify="center" style="min-height: 4vh">
+        <a-col :span="8">
           <a-input
             placeholder="Security Key"
             allowClear
@@ -68,8 +69,8 @@
           ></a-input>
         </a-col>
       </a-row>
-      <a-row :span="8">
-        <a-col :span="4">
+      <a-row :span="8" justify="center" style="min-height: 4vh">
+        <a-col :span="8">
           <a-input
             placeholder="Description"
             allowClear
@@ -77,8 +78,8 @@
           ></a-input>
         </a-col>
       </a-row>
-      <a-row :span="8">
-        <a-col :span="4">
+      <a-row :span="8" justify="center" style="min-height: 4vh">
+        <a-col :span="8">
           <a-input
             placeholder="Creator Information"
             allowClear
@@ -86,15 +87,15 @@
           ></a-input>
         </a-col>
       </a-row>
-      <a-row :span="8">
-        <a-col :span="4">
+      <a-row :span="8" justify="center">
+        <a-col :span="8" align="middle" style="min-height: 3vh">
           <a-checkbox v-model:checked="contractData.earlyWithdrawal"
             >Early Withdrawal</a-checkbox
           >
         </a-col>
       </a-row>
-      <a-row :span="8">
-        <a-col :span="4">
+      <a-row :span="8" justify="center">
+        <a-col :span="8" align="middle" style="min-height: 4vh">
           <a-space
             direction="vertical"
             :size="12"
@@ -108,8 +109,8 @@
           </a-space>
         </a-col>
       </a-row>
-      <a-row :span="8">
-        <a-col :span="4">
+      <a-row :span="8" justify="center" style="min-height: 4vh">
+        <a-col :span="8">
           <a-input-number
             placeholder="Minimun deposit"
             id="minDeposit"
@@ -119,8 +120,8 @@
           />
         </a-col>
       </a-row>
-      <a-row :span="8">
-        <a-col :span="4">
+      <a-row :span="8" justify="center" style="min-height: 4vh">
+        <a-col :span="8">
           <a-input-number
             placeholder="Maximum deposit"
             id="maxDeposit"
@@ -130,8 +131,8 @@
           />
         </a-col>
       </a-row>
-      <a-row :span="8">
-        <a-col :span="4">
+      <a-row :span="8" justify="center" style="min-height: 4vh">
+        <a-col :span="8">
           <a-button
             type="primary"
             @click="createAccount"
@@ -143,8 +144,8 @@
         </a-col>
       </a-row>
 
-      <br /><br />
-      <a-row :span="4">
+      <div style="margin-bottom: 6vh"></div>
+      <a-row :span="4" justify="center" style="min-height: 4vh">
         <a-col :span="4">
           <a-input
             placeholder="Unique Identifier"
@@ -153,7 +154,7 @@
           ></a-input>
         </a-col>
       </a-row>
-      <a-row :span="4">
+      <a-row :span="4" justify="center" style="min-height: 4vh">
         <a-col :span="4">
           <a-input
             placeholder="Value to deposit"
@@ -162,7 +163,7 @@
           ></a-input>
         </a-col>
       </a-row>
-      <a-row :span="4">
+      <a-row :span="4" justify="center" style="min-height: 4vh">
         <a-col :span="4">
           <a-button
             type="primary"
@@ -175,8 +176,8 @@
         </a-col>
       </a-row>
 
-      <br /><br />
-      <a-row :span="4">
+      <div style="margin-bottom: 6vh"></div>
+      <a-row :span="4" justify="center" style="min-height: 4vh">
         <a-col :span="4">
           <a-input
             placeholder="Unique Identifier"
@@ -185,7 +186,7 @@
           ></a-input>
         </a-col>
       </a-row>
-      <a-row :span="4">
+      <a-row :span="4" justify="center" style="min-height: 4vh">
         <a-col :span="4">
           <a-input
             placeholder="Key"
@@ -194,7 +195,7 @@
           ></a-input>
         </a-col>
       </a-row>
-      <a-row :span="8">
+      <a-row :span="8" justify="center" style="min-height: 4vh">
         <a-col :span="4">
           <a-button
             type="primary"
@@ -207,8 +208,8 @@
         </a-col>
       </a-row>
 
-      <br /><br />
-      <a-row :span="4">
+      <div style="margin-bottom: 6vh"></div>
+      <a-row :span="4" justify="center">
         <a-col :span="4">
           <a-popconfirm
             placement="rightBottom"
