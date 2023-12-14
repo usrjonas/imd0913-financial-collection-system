@@ -1,40 +1,47 @@
 <template>
   <div>
     <div style="margin-bottom: 6vh"></div>
-    <a-row :span="8" justify="center" style="min-height: 4vh">
-      <a-col :span="8">
-        <a-input
-          placeholder="Unique Identifier"
-          allowClear
-          v-model:value="uniqueIdentifier"
-        ></a-input>
-      </a-col>
-    </a-row>
-    <a-row :span="8" :gutter="8" justify="center">
-      <a-col :span="4">
-        <a-button
-          type="primary"
-          @click="existAccount"
-          :disabled="existAccountIsDisabled"
-          :loading="this.loadings.existAccount"
-          style="width: 100%"
-          >Exist Account</a-button
-        >
-      </a-col>
-      <a-col :span="4">
-        <a-button
-          type="primary"
-          @click="getAccountInformation"
-          :disabled="existAccountIsDisabled"
-          :loading="this.loadings.accountInformation"
-          style="width: 100%"
-          >Account Information</a-button
-        >
-        <a-modal v-model:open="modalOpen" title="Basic Modal" @ok="handleOk">
-          <div v-html="accountInformation"></div>
-        </a-modal>
-      </a-col>
-    </a-row>
+    <a-card title="Account Informations" :bordered="false">
+      <a-row :span="8" justify="center" style="min-height: 4vh">
+        <a-col :span="8">
+          <a-input
+            placeholder="Unique Identifier"
+            allowClear
+            v-model:value="uniqueIdentifier"
+          ></a-input>
+        </a-col>
+      </a-row>
+      <a-row :span="8" :gutter="8" justify="center">
+        <a-col :span="4">
+          <a-button
+            type="primary"
+            @click="existAccount"
+            :disabled="existAccountIsDisabled"
+            :loading="this.loadings.existAccount"
+            style="width: 100%"
+            >Exist Account</a-button
+          >
+        </a-col>
+        <a-col :span="4">
+          <a-button
+            type="primary"
+            @click="getAccountInformation"
+            :disabled="existAccountIsDisabled"
+            :loading="this.loadings.accountInformation"
+            style="width: 100%"
+            >Account Information</a-button
+          >
+          <a-modal
+            v-model:open="modalOpen"
+            v-model:title="accountTitle"
+            :confirm-loading="this.loadings.accountInformation"
+            :footer="null"
+          >
+            <div v-html="accountInformation"></div>
+          </a-modal>
+        </a-col>
+      </a-row>
+    </a-card>
   </div>
 </template>
 
@@ -51,6 +58,7 @@ export default {
   data() {
     return {
       uniqueIdentifier: "",
+      accountTitle: "Name: ",
       accountInformation: null,
       loadings: {
         existAccount: false,
@@ -105,6 +113,7 @@ export default {
               // this.accountInformationToString(account)
             );
             this.modalOpen = true;
+            this.accountTitle = "Name: " + account[0];
             this.accountInformation = this.accountInformationToString(account);
           })
           .catch((err) => {
@@ -118,15 +127,23 @@ export default {
     },
 
     accountInformationToString(accountInformation) {
-      return `<h1>Account ${accountInformation[0]}</h1>
-      <p>Description: ${accountInformation[1]}</p>
+      return `<p>Description: ${accountInformation[1]}</p>
       <p>Creator Information: ${accountInformation[2]}</p>
-      <p>"Balance: ${accountInformation[3].toString()}</p>
-      <p>Expiration Date: ${accountInformation[4].toString()}</p>
-      <p>Min Deposit: ${accountInformation[5].toString()}</p>
-      <p>Max Deposit: ${accountInformation[6].toString()}</p>
-      <p>Amount Deposited: ${accountInformation[7].toString()}</p>
+      <p>Expiration Date: ${this.formatDate(accountInformation[4])}</p>
+      <p>Min Deposit: ${accountInformation[5].toString()} eth</p>
+      <p>Max Deposit: ${accountInformation[6].toString()} eth</p>
+      <p>Amount Deposited: ${accountInformation[7].toString()} eth</p>
+      <p>Balance: ${accountInformation[3].toString()} eth</p>
       <p>Early Withdrawal: ${accountInformation[8]}</p>`;
+    },
+
+    formatDate(dateUnix) {
+      let date = new Date(parseInt(dateUnix) * 1000);
+
+      let formattedTime =
+        date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+
+      return formattedTime;
     },
 
     handleOk(e) {

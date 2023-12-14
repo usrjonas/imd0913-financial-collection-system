@@ -1,60 +1,62 @@
 <template>
   <div>
     <div style="margin-bottom: 6vh"></div>
-    <a-row :span="4" justify="center" style="min-height: 4vh">
-      <a-col :span="4">
-        <a-input
-          placeholder="Unique Identifier"
-          allowClear
-          v-model:value="contractData.uniqueIdentifierToWithdraw"
-        ></a-input>
-      </a-col>
-    </a-row>
-    <a-row :span="4" justify="center" style="min-height: 4vh">
-      <a-col :span="4">
-        <a-input
-          placeholder="Key"
-          allowClear
-          v-model:value="contractData.withdrawKey"
-        ></a-input>
-      </a-col>
-    </a-row>
-    <a-row :span="8" justify="center" style="min-height: 4vh">
-      <a-col :span="4">
-        <a-button
-          type="primary"
-          @click="withdrawValue"
-          :disabled="withdrawIsDisabled"
-          :loading="this.loadings.withdrawValue"
-          style="width: 100%"
-          >Withdraw</a-button
-        >
-      </a-col>
-    </a-row>
-
-    <div style="margin-bottom: 6vh"></div>
-    <a-row :span="4" justify="center">
-      <a-col :span="4">
-        <a-popconfirm
-          placement="rightBottom"
-          ok-text="Yes"
-          cancel-text="No"
-          @confirm="getManagerProfit"
-        >
-          <template #title>
-            <div>
-              {{ `Do you are sure that you are the contract owner?` }}
-            </div>
-          </template>
+    <a-card title="Owner Section" :bordered="false">
+      <a-row :span="4" justify="center" style="min-height: 4vh">
+        <a-col :span="4">
+          <a-input
+            placeholder="Unique Identifier"
+            allowClear
+            v-model:value="contractData.uniqueIdentifierToWithdraw"
+          ></a-input>
+        </a-col>
+      </a-row>
+      <a-row :span="4" justify="center" style="min-height: 4vh">
+        <a-col :span="4">
+          <a-input
+            placeholder="Key"
+            allowClear
+            v-model:value="contractData.withdrawKey"
+          ></a-input>
+        </a-col>
+      </a-row>
+      <a-row :span="8" justify="center" style="min-height: 4vh">
+        <a-col :span="4">
           <a-button
-            danger
-            :loading="this.loadings.getManagerProfit"
+            type="primary"
+            @click="withdrawValue"
+            :disabled="withdrawIsDisabled"
+            :loading="this.loadings.withdrawValue"
             style="width: 100%"
-            >Withdraw Manager Profit</a-button
+            >Withdraw</a-button
           >
-        </a-popconfirm>
-      </a-col>
-    </a-row>
+        </a-col>
+      </a-row>
+
+      <div style="margin-bottom: 6vh"></div>
+      <a-row :span="4" justify="center">
+        <a-col :span="4">
+          <a-popconfirm
+            placement="rightBottom"
+            ok-text="Yes"
+            cancel-text="No"
+            @confirm="getManagerProfit"
+          >
+            <template #title>
+              <div>
+                {{ `Do you are sure that you are the contract owner?` }}
+              </div>
+            </template>
+            <a-button
+              danger
+              :loading="this.loadings.getManagerProfit"
+              style="width: 100%"
+              >Withdraw Manager Profit</a-button
+            >
+          </a-popconfirm>
+        </a-col>
+      </a-row>
+    </a-card>
   </div>
 </template>
 

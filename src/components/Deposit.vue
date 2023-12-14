@@ -1,36 +1,38 @@
 <template>
   <div>
     <div style="margin-bottom: 6vh"></div>
-    <a-row :span="4" justify="center" style="min-height: 4vh">
-      <a-col :span="4">
-        <a-input
-          placeholder="Unique Identifier"
-          allowClear
-          v-model:value="uniqueIdentifierToDeposit"
-        ></a-input>
-      </a-col>
-    </a-row>
-    <a-row :span="4" justify="center" style="min-height: 4vh">
-      <a-col :span="4">
-        <a-input
-          placeholder="Value to deposit"
-          allowClear
-          v-model:value="valueToDeposit"
-        ></a-input>
-      </a-col>
-    </a-row>
-    <a-row :span="4" justify="center" style="min-height: 4vh">
-      <a-col :span="4">
-        <a-button
-          type="primary"
-          @click="depositValue"
-          :disabled="createDepositIsDisabled"
-          :loading="this.loadings.depositValue"
-          style="width: 100%"
-          >Deposit Value</a-button
-        >
-      </a-col>
-    </a-row>
+    <a-card title="Deposit Section" :bordered="false">
+      <a-row :span="4" justify="center" style="min-height: 4vh">
+        <a-col :span="4">
+          <a-input
+            placeholder="Unique Identifier"
+            allowClear
+            v-model:value="uniqueIdentifierToDeposit"
+          ></a-input>
+        </a-col>
+      </a-row>
+      <a-row :span="4" justify="center" style="min-height: 4vh">
+        <a-col :span="4">
+          <a-input
+            placeholder="Value to deposit"
+            allowClear
+            v-model:value="valueToDeposit"
+          ></a-input>
+        </a-col>
+      </a-row>
+      <a-row :span="4" justify="center" style="min-height: 4vh">
+        <a-col :span="4">
+          <a-button
+            type="primary"
+            @click="depositValue"
+            :disabled="createDepositIsDisabled"
+            :loading="this.loadings.depositValue"
+            style="width: 100%"
+            >Deposit Value</a-button
+          >
+        </a-col>
+      </a-row>
+    </a-card>
   </div>
 </template>
 
