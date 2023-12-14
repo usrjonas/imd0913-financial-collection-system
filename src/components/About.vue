@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div style="margin-bottom: 6vh"></div>
     <a-row :span="8" justify="center" style="min-height: 4vh">
       <a-col :span="8">
         <a-input
@@ -29,6 +30,9 @@
           style="width: 100%"
           >Account Information</a-button
         >
+        <a-modal v-model:open="modalOpen" title="Basic Modal" @ok="handleOk">
+          <div v-html="accountInformation"></div>
+        </a-modal>
       </a-col>
     </a-row>
   </div>
@@ -47,10 +51,12 @@ export default {
   data() {
     return {
       uniqueIdentifier: "",
+      accountInformation: null,
       loadings: {
         existAccount: false,
         accountInformation: false,
       },
+      modalOpen: false,
     };
   },
 
@@ -93,12 +99,14 @@ export default {
         await contract.methods
           .getAccountInformation(this.uniqueIdentifier)
           .call()
-          .then((account) =>
+          .then((account) => {
             successNotification(
-              "Account Information",
-              this.accountInformationToString(account)
-            )
-          )
+              "Account Information"
+              // this.accountInformationToString(account)
+            );
+            this.modalOpen = true;
+            this.accountInformation = this.accountInformationToString(account);
+          })
           .catch((err) => {
             console.log("Account not exists");
             errorNotification("Error", "Account not exists!");
@@ -110,34 +118,20 @@ export default {
     },
 
     accountInformationToString(accountInformation) {
-      return (
-        "Unique Identifier: " +
-        accountInformation[0] +
-        "\n" +
-        "Description: " +
-        accountInformation[1] +
-        "\n" +
-        "Creator Information: " +
-        accountInformation[2] +
-        "\n" +
-        "Balance: " +
-        accountInformation[3].toString() +
-        "\n" +
-        "Expiration Date: " +
-        accountInformation[4].toString() +
-        "\n" +
-        "Min Deposit: " +
-        accountInformation[5].toString() +
-        "\n" +
-        "Max Deposit: " +
-        accountInformation[6].toString() +
-        "\n" +
-        "Amount Deposited: " +
-        accountInformation[7].toString() +
-        "\n" +
-        "Early Withdrawal: " +
-        accountInformation[8]
-      );
+      return `<h1>Account ${accountInformation[0]}</h1>
+      <p>Description: ${accountInformation[1]}</p>
+      <p>Creator Information: ${accountInformation[2]}</p>
+      <p>"Balance: ${accountInformation[3].toString()}</p>
+      <p>Expiration Date: ${accountInformation[4].toString()}</p>
+      <p>Min Deposit: ${accountInformation[5].toString()}</p>
+      <p>Max Deposit: ${accountInformation[6].toString()}</p>
+      <p>Amount Deposited: ${accountInformation[7].toString()}</p>
+      <p>Early Withdrawal: ${accountInformation[8]}</p>`;
+    },
+
+    handleOk(e) {
+      console.log(e);
+      this.modalOpen = false;
     },
 
     setLoading(property, state) {

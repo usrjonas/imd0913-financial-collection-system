@@ -2,7 +2,7 @@
   <div>
     <div>
       <a-menu mode="horizontal" theme="dark">
-        <a-menu-item :key="1"
+        <!-- <a-menu-item :key="1"
           >Home<router-link to="/"></router-link
         ></a-menu-item>
         <a-menu-item :key="2"
@@ -13,14 +13,18 @@
         </a-menu-item>
         <a-menu-item :key="4"
           ><router-link to="/owner">Owner</router-link>
-        </a-menu-item>
+        </a-menu-item> -->
         <a-menu-item @click="connectWallet" :key="3" :disabled="connected">{{
           walletStatus
         }}</a-menu-item>
       </a-menu>
 
-      <div style="margin-bottom: 6vh"></div>
-      <router-view v-if="connected"></router-view>
+      <div v-if="connected">
+        <Home />
+        <About />
+        <Deposit />
+        <Owner />
+      </div>
     </div>
   </div>
 </template>
@@ -29,6 +33,10 @@
 import Web3 from "web3";
 import contractAddress from "./constants/ContractAddress";
 import ABI from "./constants/ABI.js";
+import Home from "./components/Home.vue";
+import About from "./components/About.vue";
+import Deposit from "./components/Deposit.vue";
+import Owner from "./components/Owner.vue";
 
 export default {
   name: "App",
@@ -39,6 +47,13 @@ export default {
       accountAddress: "",
       walletStatus: "Connect wallet",
     };
+  },
+
+  components: {
+    Home,
+    About,
+    Deposit,
+    Owner,
   },
 
   methods: {
