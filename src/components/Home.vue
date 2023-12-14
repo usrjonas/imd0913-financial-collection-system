@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="margin-bottom: 6vh"></div>
+    <div style="margin-bottom: 4vh"></div>
     <a-card title="Create Account" :bordered="false">
       <a-row :span="8" justify="center" style="min-height: 4vh">
         <a-col :span="8">
@@ -13,20 +13,20 @@
       </a-row>
       <a-row :span="8" justify="center" style="min-height: 4vh">
         <a-col :span="8">
-          <a-input
+          <a-input-password
             placeholder="Security Key"
             allowClear
             v-model:value="contractData.securityKey"
-          ></a-input>
+          ></a-input-password>
         </a-col>
       </a-row>
-      <a-row :span="8" justify="center" style="min-height: 4vh">
+      <a-row :span="8" justify="center" style="min-height: 7vh">
         <a-col :span="8">
-          <a-input
+          <a-textarea
             placeholder="Description"
             allowClear
             v-model:value="contractData.description"
-          ></a-input>
+          ></a-textarea>
         </a-col>
       </a-row>
       <a-row :span="8" justify="center" style="min-height: 4vh">

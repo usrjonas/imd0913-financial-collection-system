@@ -13,11 +13,11 @@
       </a-row>
       <a-row :span="4" justify="center" style="min-height: 4vh">
         <a-col :span="4">
-          <a-input
+          <a-input-password
             placeholder="Key"
             allowClear
             v-model:value="contractData.withdrawKey"
-          ></a-input>
+          ></a-input-password>
         </a-col>
       </a-row>
       <a-row :span="8" justify="center" style="min-height: 4vh">
@@ -44,7 +44,7 @@
           >
             <template #title>
               <div>
-                {{ `Do you are sure that you are the contract owner?` }}
+                {{ `Do you sure that you are the contract owner?` }}
               </div>
             </template>
             <a-button

@@ -58,7 +58,7 @@ export default {
   data() {
     return {
       uniqueIdentifier: "",
-      accountTitle: "Name: ",
+      accountTitle: "Account",
       accountInformation: null,
       loadings: {
         existAccount: false,
@@ -113,7 +113,7 @@ export default {
               // this.accountInformationToString(account)
             );
             this.modalOpen = true;
-            this.accountTitle = "Name: " + account[0];
+            this.accountTitle = "Account " + account[0];
             this.accountInformation = this.accountInformationToString(account);
           })
           .catch((err) => {
