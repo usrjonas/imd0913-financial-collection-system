@@ -63,6 +63,11 @@ const ABI = [
       },
       {
         internalType: "uint256",
+        name: "depositTarget",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
         name: "minDeposit",
         type: "uint256",
       },
@@ -208,6 +213,11 @@ const ABI = [
         internalType: "string",
         name: "",
         type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
       {
         internalType: "uint256",

@@ -63,6 +63,17 @@
       <a-row :span="8" justify="center" style="min-height: 4vh">
         <a-col :span="8">
           <a-input-number
+            placeholder="Deposit Target"
+            id="depositTarget"
+            v-model:value="contractData.depositTarget"
+            style="width: 100%"
+            :min="1"
+          />
+        </a-col>
+      </a-row>
+      <a-row :span="8" justify="center" style="min-height: 4vh">
+        <a-col :span="8">
+          <a-input-number
             placeholder="Minimun deposit"
             id="minDeposit"
             v-model:value="contractData.minDeposit"
@@ -117,6 +128,7 @@ export default {
         creatorInformation: "",
         earlyWithdrawal: ref(false),
         expirationDate: null,
+        depositTarget: null,
         minDeposit: null,
         maxDeposit: null,
       },
@@ -145,6 +157,7 @@ export default {
             data.creatorInformation,
             data.earlyWithdrawal,
             data.expirationDate ? data.expirationDate.unix() : 1704048876,
+            data.depositTarget ? data.depositTarget : 1,
             data.minDeposit,
             data.maxDeposit
           )

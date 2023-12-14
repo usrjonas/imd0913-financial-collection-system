@@ -39,6 +39,7 @@ contract FinancialCollectionSystem {
         uint256 expirationDate;
         uint256 minDeposit;
         uint256 maxDeposit;
+        uint256 depositTarget;
         uint256 amountDeposited;
         bool earlyWithdrawal;
     }
@@ -75,6 +76,7 @@ contract FinancialCollectionSystem {
             uint256,
             uint256,
             uint256,
+            uint256,
             bool
         )
     {
@@ -96,6 +98,7 @@ contract FinancialCollectionSystem {
             account.minDeposit,
             account.maxDeposit,
             account.amountDeposited,
+            account.depositTarget,
             account.earlyWithdrawal
         );
     }
@@ -107,6 +110,7 @@ contract FinancialCollectionSystem {
         string memory creatorInformation,
         bool earlyWithdrawal,
         uint256 expirationDate,
+        uint256 depositTarget,
         uint256 minDeposit,
         uint256 maxDeposit
     ) public {
@@ -122,6 +126,8 @@ contract FinancialCollectionSystem {
         // Verificar se o valor mínimo de depósito é menor ou igual ao valor máximo de depósito
         require(minDeposit <= maxDeposit, "Invalid deposit range");
 
+        require(depositTarget > 0, "Invalid deposit target");
+
         // Criar uma nova conta
         Account memory newAccount = Account({
             creatorAddress: msg.sender,
@@ -133,6 +139,7 @@ contract FinancialCollectionSystem {
             expirationDate: expirationDate,
             minDeposit: minDeposit,
             maxDeposit: maxDeposit,
+            depositTarget: depositTarget,
             amountDeposited: 0,
             earlyWithdrawal: earlyWithdrawal
         });

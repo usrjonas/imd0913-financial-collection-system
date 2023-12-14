@@ -38,6 +38,7 @@
             :footer="null"
           >
             <div v-html="accountInformation"></div>
+            <a-progress v-model:percent="percentDeposited" />
           </a-modal>
         </a-col>
       </a-row>
@@ -59,6 +60,7 @@ export default {
     return {
       uniqueIdentifier: "",
       accountTitle: "Account",
+      percentDeposited: 0,
       accountInformation: null,
       loadings: {
         existAccount: false,
@@ -108,17 +110,14 @@ export default {
           .getAccountInformation(this.uniqueIdentifier)
           .call()
           .then((account) => {
-            successNotification(
-              "Account Information"
-              // this.accountInformationToString(account)
-            );
             this.modalOpen = true;
             this.accountTitle = "Account " + account[0];
             this.accountInformation = this.accountInformationToString(account);
+            this.getPercentDeposited(account);
           })
           .catch((err) => {
             console.log("Account not exists");
-            errorNotification("Error", "Account not exists!");
+            errorNotification("Error", err.message);
           });
       } finally {
         console.log("Fim da execução!");
@@ -127,14 +126,26 @@ export default {
     },
 
     accountInformationToString(accountInformation) {
+      let expirationDate;
+      if (accountInformation[9] === true) {
+        expirationDate = "Don't have expiration date";
+      } else {
+        expirationDate = this.formatDate(accountInformation[4]);
+      }
       return `<p>Description: ${accountInformation[1]}</p>
       <p>Creator Information: ${accountInformation[2]}</p>
-      <p>Expiration Date: ${this.formatDate(accountInformation[4])}</p>
+      <p>Expiration Date: ${expirationDate}</p>
       <p>Min Deposit: ${accountInformation[5].toString()} eth</p>
       <p>Max Deposit: ${accountInformation[6].toString()} eth</p>
       <p>Amount Deposited: ${accountInformation[7].toString()} eth</p>
+      <p>Deposit Target: ${accountInformation[8].toString()} eth</p>
       <p>Balance: ${accountInformation[3].toString()} eth</p>
-      <p>Early Withdrawal: ${accountInformation[8]}</p>`;
+      <p>Early Withdrawal: ${accountInformation[9]}</p>`;
+    },
+
+    getPercentDeposited(accountInformation) {
+      this.percentDeposited =
+        Number(accountInformation[7] / accountInformation[8]) * 100;
     },
 
     formatDate(dateUnix) {
