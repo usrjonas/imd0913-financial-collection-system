@@ -1,6 +1,11 @@
-# vue-project
+# Financial Collection System
 
-This template should help get you started developing with Vue 3 in Vite.
+Final project of IMD0913 - BLOCKCHAIN E APLICAÇÕES DESCENTRALIZADAS course.
+
+## Authors
+
+- João Guilherme Lopes Alves da Costa (20200045609)
+- Jonas de Oliveira Freire Filho (20200038865)
 
 ## Recommended IDE Setup
 
