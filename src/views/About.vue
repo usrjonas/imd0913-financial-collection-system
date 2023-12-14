@@ -1,29 +1,32 @@
 <template>
   <div>
-    <a-col :span="8">
-      <a-input
-        placeholder="Account address"
-        allowClear
-        v-model:value="accountAddress"
-      ></a-input>
-    </a-col>
-    <a-row :span="8">
+    <a-row :span="8" justify="center" style="min-height: 4vh">
+      <a-col :span="8">
+        <a-input
+          placeholder="Unique Identifier"
+          allowClear
+          v-model:value="uniqueIdentifier"
+        ></a-input>
+      </a-col>
+    </a-row>
+    <a-row :span="8" :gutter="8" justify="center">
       <a-col :span="4">
         <a-button
           type="primary"
           @click="existAccount"
           :disabled="existAccountIsDisabled"
           :loading="this.loadings.existAccount"
+          style="width: 100%"
           >Exist Account</a-button
         >
       </a-col>
-      <a-col>
+      <a-col :span="4">
         <a-button
-          :span="4"
           type="primary"
           @click="getAccountInformation"
           :disabled="existAccountIsDisabled"
           :loading="this.loadings.accountInformation"
+          style="width: 100%"
           >Account Information</a-button
         >
       </a-col>
@@ -43,7 +46,7 @@ export default {
 
   data() {
     return {
-      accountAddress: "",
+      uniqueIdentifier: "",
       loadings: {
         existAccount: false,
         accountInformation: false,
@@ -56,12 +59,12 @@ export default {
       try {
         this.setLoading("existAccount", true);
         console.log(
-          "Verifing if this account " + this.accountAddress + " exist..."
+          "Verifing if this account " + this.uniqueIdentifier + " exist..."
         );
 
         const contract = this.$globalState.contract;
         await contract.methods
-          .existsAccount(this.accountAddress)
+          .existsAccount(this.uniqueIdentifier)
           .call()
           .then((result) => {
             console.log(result);
@@ -83,17 +86,19 @@ export default {
       try {
         this.setLoading("accountInformation", true);
         console.log(
-          "Getting information of this account " + this.accountAddress
+          "Getting information of this account " + this.uniqueIdentifier
         );
 
         const contract = this.$globalState.contract;
         await contract.methods
-          .getAccountInformation(this.accountAddress)
+          .getAccountInformation(this.uniqueIdentifier)
           .call()
-          .then((result) => {
-            console.log(result);
-            successNotification("Account Information", result.data);
-          })
+          .then((account) =>
+            successNotification(
+              "Account Information",
+              this.accountInformationToString(account)
+            )
+          )
           .catch((err) => {
             console.log("Account not exists");
             errorNotification("Error", "Account not exists!");
@@ -104,6 +109,37 @@ export default {
       }
     },
 
+    accountInformationToString(accountInformation) {
+      return (
+        "Unique Identifier: " +
+        accountInformation[0] +
+        "\n" +
+        "Description: " +
+        accountInformation[1] +
+        "\n" +
+        "Creator Information: " +
+        accountInformation[2] +
+        "\n" +
+        "Balance: " +
+        accountInformation[3].toString() +
+        "\n" +
+        "Expiration Date: " +
+        accountInformation[4].toString() +
+        "\n" +
+        "Min Deposit: " +
+        accountInformation[5].toString() +
+        "\n" +
+        "Max Deposit: " +
+        accountInformation[6].toString() +
+        "\n" +
+        "Amount Deposited: " +
+        accountInformation[7].toString() +
+        "\n" +
+        "Early Withdrawal: " +
+        accountInformation[8]
+      );
+    },
+
     setLoading(property, state) {
       this.loadings[property] = state;
     },
@@ -111,7 +147,7 @@ export default {
 
   computed: {
     existAccountIsDisabled() {
-      return this.accountAddress.length <= 0;
+      return this.uniqueIdentifier.length <= 0;
     },
   },
 };

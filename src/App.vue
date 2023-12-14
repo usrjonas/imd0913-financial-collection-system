@@ -8,11 +8,18 @@
         <a-menu-item :key="2"
           ><router-link to="/about">About</router-link>
         </a-menu-item>
+        <a-menu-item :key="3"
+          ><router-link to="/deposit">Deposit</router-link>
+        </a-menu-item>
+        <a-menu-item :key="4"
+          ><router-link to="/owner">Owner</router-link>
+        </a-menu-item>
         <a-menu-item @click="connectWallet" :key="3" :disabled="connected">{{
           walletStatus
         }}</a-menu-item>
       </a-menu>
 
+      <div style="margin-bottom: 6vh"></div>
       <router-view v-if="connected"></router-view>
     </div>
   </div>
